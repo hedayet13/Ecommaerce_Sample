@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<h1>Products</h1>
+{% if q %}<p>Results for "<strong>{{ q }}</strong>"</p>{% endif %}
+<div class="row row-cols-2 row-cols-md-4 g-3">
+  {% for p in products %}
+    {% include "catalog/_product_card.html" with p=p %}
+  {% empty %}
+    <p>No products found.</p>
+  {% endfor %}
+</div>
+{% endblock %}

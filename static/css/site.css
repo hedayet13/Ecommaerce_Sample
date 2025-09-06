@@ -1,0 +1,57 @@
+.carousel-item { max-height: 420px; }
+.product-card { transition: transform .1s ease-in-out; }
+.product-card:hover { transform: translateY(-2px); }
+/* Colors */
+:root{
+  --wdm-deep:#0f0b24;     /* deep navy */
+  --wdm-red:#e8515d;      /* coral red */
+}
+
+.site-header .util-bar{ background: var(--wdm-deep); }
+.site-header .util-bar .util-link{ color:#cfd0e6; text-decoration:none; }
+.site-header .util-bar .util-link:hover{ color:#fff; }
+
+.site-header .main-bar{ background: var(--wdm-deep); }
+.site-header .search .form-control{ height:3.1rem; }
+.site-header .search .btn{ border-top-left-radius:0; border-bottom-left-radius:0; }
+
+.category-bar{ background: var(--wdm-red); }
+.category-bar .cat-link{
+  color:#fff; text-decoration:none; font-weight:600;
+}
+.category-bar .cat-link:hover{ opacity:.9; }
+
+.dropdown-menu{ border-radius: 0.75rem; }
+/* product page polish */
+.gallery-thumbs img{ object-fit:cover; width:100%; aspect-ratio:1/1; }
+.gallery-thumbs a{ display:block; border-radius:.5rem; overflow:hidden; }
+.gallery-thumbs a:hover img{ outline:3px solid #0d6efd; }
+
+.prose img{ max-width:100%; height:auto; border-radius:1rem; margin: .5rem 0; }
+.prose h2,.prose h3{ margin-top:1.2rem; }
+
+.card .card-title{ font-weight:700; }
+
+.badge.bg-warning{ background-color:#ffd166 !important; }
+
+.breadcrumb .breadcrumb-item + .breadcrumb-item::before{
+  content:"›";
+}
+/* hero */
+.hero-card{background:#f2f3f7;border:none;}
+/* ribbon */
+.ribbon{background:#f7f1ff;border:1px solid #e9ddff}
+.ribbon .r-item{font-size:.9rem;display:flex;gap:.5rem;align-items:center}
+/* categories */
+.cat-icon{width:54px;height:54px;display:flex;align-items:center;justify-content:center;background:#fff}
+.cat-pill .cat-icon i{font-size:1.2rem}
+/* product cards */
+.product-card .card-img-top{object-fit:cover;height:160px}
+.product-card .badge{z-index:2}
+.banner-blue{background:linear-gradient(135deg,#4979ff,#4d48ff)}
+.promo-thumb{width:72px;height:96px;border-radius:.5rem;object-fit:cover}
+.category-strip .btn{--bs-btn-padding-y:.2rem;--bs-btn-padding-x:.7rem}
+/* promo spots */
+.promo-spot img{max-height:140px;object-fit:contain}
+/* static/css/site.css */
+.card { border-radius: 1rem; }

@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- ======= HERO + HOT CATEGORIES ======= -->
+<div class="row g-3 align-items-stretch">
+  <!-- Left hero card -->
+  <div class="col-xl-6">
+    <div class="card hero-card h-100">
+      <div class="row g-0 h-100">
+        <div class="col-7 p-4 d-flex flex-column justify-content-between">
+          <div>
+            <div class="text-uppercase small text-muted">Nordic collection in stock</div>
+            <h2 class="fw-bold mb-3">Inborn Nordic<br>Chair Collection</h2>
+          </div>
+          <a href="#" class="btn btn-dark rounded-pill w-auto px-4">Buy Now</a>
+        </div>
+        <div class="col-5 p-3 d-flex align-items-center justify-content-center">
+          <img src="{% static 'img/demo/chair-hero.png' %}" class="img-fluid" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Middle promo + best pick list -->
+  <div class="col-xl-3">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <div class="text-center mb-2">
+          <div class="text-muted small">Special Offer</div>
+          <h5 class="fw-bold">Washing Machine</h5>
+          <div class="small text-muted">- 50% Special Offer -</div>
+        </div>
+        <img src="{% static 'img/demo/washer.png' %}" class="img-fluid rounded mb-3" alt="">
+        <div class="small text-muted">Best pick of the week</div>
+        <div class="vstack gap-2">
+          {% for p in featured|slice:":3" %}
+            <a href="{{ p.get_absolute_url }}" class="d-flex align-items-center gap-2 text-decoration-none">
+              {% if p.images.first %}
+                <img src="{{ p.images.first.image.url }}" class="rounded border" style="width:42px;height:42px;object-fit:cover">
+              {% endif %}
+              <div class="flex-grow-1 small text-dark">{{ p.name|truncatechars:32 }}</div>
+              <div class="small fw-semibold">${{ p.price }}</div>
+            </a>
+          {% empty %}
+            <div class="text-muted small">No featured products yet.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right hot categories -->
+  <div class="col-xl-3">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h6 class="mb-0">Hot categories</h6>
+          <a href="#" class="small">See all</a>
+        </div>
+        <div class="row row-cols-4 g-3">
+          {% if categories %}
+            {% for c in categories|slice:":12" %}
+              <div class="col text-center">
+                <a href="{{ c.get_absolute_url }}" class="text-decoration-none cat-pill">
+                  <div class="cat-icon rounded-circle border mx-auto">
+                    {% if c.icon %}
+                      <img src="{{ c.icon.url }}" class="img-fluid">
+                    {% else %}
+                      <i class="bi bi-box"></i>
+                    {% endif %}
+                  </div>
+                  <div class="small mt-1 text-dark">{{ c.name|truncatechars:10 }}</div>
+                </a>
+              </div>
+            {% endfor %}
+          {% else %}
+            {% for _ in "123456789012"|make_list %}
+              <div class="col text-center">
+                <div class="cat-icon rounded-circle border mx-auto d-flex align-items-center justify-content-center">
+                  <i class="bi bi-box"></i>
+                </div>
+                <div class="small mt-1 text-muted">Category</div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= FEATURE RIBBON ======= -->
+<div class="ribbon mt-3 rounded-pill d-flex flex-wrap justify-content-between px-3 py-2">
+  <div class="r-item"><i class="bi bi-truck"></i> Free shipping over $150</div>
+  <div class="r-item"><i class="bi bi-clock"></i> Next-day delivery</div>
+  <div class="r-item"><i class="bi bi-arrow-repeat"></i> 30-day free returns</div>
+  <div class="r-item"><i class="bi bi-headset"></i> Expert customer service</div>
+  <div class="r-item"><i class="bi bi-star"></i> Exclusive deals</div>
+</div>
+
+<!-- ======= FEATURED GRID + RIGHT SIDEBAR ======= -->
+<div class="row g-3 mt-2">
+  <div class="col-lg-9">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <h5 class="mb-0">Featured products</h5>
+      <ul class="nav small gap-3">
+        <li class="nav-item"><a class="nav-link p-0 active" href="#">Popular</a></li>
+        <li class="nav-item"><a class="nav-link p-0" href="#">Most viewed</a></li>
+        <li class="nav-item"><a class="nav-link p-0" href="#">Top selling</a></li>
+      </ul>
+    </div>
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+      {% for p in featured %}
+        <div class="col">
+          <div class="card product-card h-100">
+            {% if p.badge %}<span class="badge bg-danger position-absolute m-2">{{ p.badge }}</span>{% endif %}
+            {% if p.images.first %}<img src="{{ p.images.first.image.url }}" class="card-img-top" alt="{{ p.name }}">{% endif %}
+            <div class="card-body d-flex flex-column">
+              <a href="{{ p.get_absolute_url }}" class="text-decoration-none text-dark"><h6 class="card-title">{{ p.name|truncatechars:44 }}</h6></a>
+              <div class="mt-auto">
+                {% if p.compare_at_price %}<span class="text-muted text-decoration-line-through me-2">${{ p.compare_at_price }}</span>{% endif %}
+                <strong>${{ p.price }}</strong>
+              </div>
+              <form action="{% url 'cart_add' p.id %}" method="post" class="mt-2">
+                {% csrf_token %}<button class="btn btn-primary w-100 btn-sm">Add to cart</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        {% for _ in "12345678"|make_list %}
+          <div class="col"><div class="card h-100 placeholder-wave" style="height:240px"></div></div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+    <!-- Mid promo banner -->
+    <div class="card mt-3 banner-blue">
+      <div class="card-body d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <div class="text-white-50 small">Get discount</div>
+          <h4 class="text-white mb-0">on PS5 games</h4>
+        </div>
+        <div class="d-flex gap-3">
+          <img src="{% static 'img/demo/game-1.png' %}" class="promo-thumb" alt="">
+          <img src="{% static 'img/demo/game-2.png' %}" class="promo-thumb" alt="">
+          <img src="{% static 'img/demo/game-3.png' %}" class="promo-thumb" alt="">
+        </div>
+        <a href="#" class="btn btn-light rounded-pill px-4">Buy Now</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right sidebar: articles + latest -->
+  <div class="col-lg-3">
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white"><strong>Last articles</strong></div>
+      <div class="list-group list-group-flush small">
+        {% if articles %}
+          {% for a in articles|slice:":3" %}
+            <a class="list-group-item list-group-item-action d-flex gap-2 align-items-center" href="{{ a.url }}">
+              {% if a.image %}<img src="{{ a.image.url }}" class="rounded" style="width:52px;height:52px;object-fit:cover">{% endif %}
+              <div>
+                <div class="fw-semibold">{{ a.title|truncatechars:46 }}</div>
+                <div class="text-muted">{{ a.published_at|date:"M d, Y" }}</div>
+              </div>
+            </a>
+          {% endfor %}
+        {% else %}
+          <div class="list-group-item text-muted">No articles yet.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-white"><strong>Latest products</strong></div>
+      <div class="list-group list-group-flush small">
+        {% if latest_products %}
+          {% for p in latest_products|slice:":4" %}
+            <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="{{ p.get_absolute_url }}">
+              {% if p.images.first %}<img src="{{ p.images.first.image.url }}" class="rounded border" style="width:48px;height:48px;object-fit:cover">{% endif %}
+              <div class="flex-grow-1">{{ p.name|truncatechars:36 }}</div>
+              <div class="fw-semibold">${{ p.price }}</div>
+            </a>
+          {% endfor %}
+        {% else %}
+          {% for p in featured|slice:":4" %}
+            <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="{{ p.get_absolute_url }}">
+              {% if p.images.first %}<img src="{{ p.images.first.image.url }}" class="rounded border" style="width:48px;height:48px;object-fit:cover">{% endif %}
+              <div class="flex-grow-1">{{ p.name|truncatechars:36 }}</div>
+              <div class="fw-semibold">${{ p.price }}</div>
+            </a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= CATEGORY PILLS STRIP ======= -->
+<div class="category-strip my-4 p-3 rounded-3 bg-light">
+  <div class="d-flex flex-wrap gap-3 align-items-center">
+    <span class="fw-semibold">Shop by categories</span>
+    <div class="d-flex flex-wrap gap-2">
+      {% if categories %}
+        {% for c in categories|slice:":12" %}
+          <a href="{{ c.get_absolute_url }}" class="btn btn-sm btn-outline-secondary rounded-pill">{{ c.name }}</a>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- ======= 3 PROMO CARDS ======= -->
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="card promo-spot h-100 text-center p-3">
+      <img src="{% static 'img/demo/watch-hero.png' %}" class="img-fluid mb-2" alt="">
+      <h6 class="fw-bold">Next level adventure</h6>
+      <p class="small text-muted">A rugged smartwatch for outdoor pursuits. Bright display, long battery.</p>
+      <a class="btn btn-dark rounded-pill px-4" href="#">Shop now</a>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card promo-spot h-100 text-center p-3 bg-dark text-white">
+      <img src="{% static 'img/demo/sofa.png' %}" class="img-fluid mb-2" alt="">
+      <h6 class="fw-bold">Hearth loft series</h6>
+      <p class="small text-white-50">Premium sofas for modern interiors. Comfort meets style.</p>
+      <a class="btn btn-light rounded-pill px-4" href="#">Shop now</a>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card promo-spot h-100 text-center p-3">
+      <img src="{% static 'img/demo/dyson.png' %}" class="img-fluid mb-2" alt="">
+      <h6 class="fw-bold">Hair dryer blue blush</h6>
+      <p class="small text-muted">Fast drying with intelligent heat control. Limited edition.</p>
+      <a class="btn btn-dark rounded-pill px-4" href="#">Shop now</a>
+    </div>
+  </div>
+</div>
+
+<!-- ======= MORE RECOMMENDED GRID ======= -->
+<div class="mt-4">
+  <div class="d-flex align-items-center justify-content-between mb-2">
+    <h5 class="mb-0">More recommended products</h5>
+  </div>
+  <div class="row row-cols-2 row-cols-md-4 row-cols-xl-6 g-3">
+    {% if recommended %}
+      {% for p in recommended %}
+        <div class="col">
+          <div class="card product-card h-100">
+            {% if p.images.first %}<img src="{{ p.images.first.image.url }}" class="card-img-top" alt="{{ p.name }}">{% endif %}
+            <div class="card-body d-flex flex-column">
+              <a href="{{ p.get_absolute_url }}" class="text-decoration-none text-dark"><h6 class="card-title">{{ p.name|truncatechars:44 }}</h6></a>
+              <div class="mt-auto">
+                {% if p.compare_at_price %}<span class="text-muted text-decoration-line-through me-2">${{ p.compare_at_price }}</span>{% endif %}
+                <strong>${{ p.price }}</strong>
+              </div>
+              <form action="{% url 'cart_add' p.id %}" method="post" class="mt-2">
+                {% csrf_token %}<button class="btn btn-primary w-100 btn-sm">Add to cart</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      {% for p in featured %}
+        <div class="col">
+          <div class="card product-card h-100">
+            {% if p.images.first %}<img src="{{ p.images.first.image.url }}" class="card-img-top" alt="{{ p.name }}">{% endif %}
+            <div class="card-body d-flex flex-column">
+              <a href="{{ p.get_absolute_url }}" class="text-decoration-none text-dark"><h6 class="card-title">{{ p.name|truncatechars:44 }}</h6></a>
+              <div class="mt-auto">
+                {% if p.compare_at_price %}<span class="text-muted text-decoration-line-through me-2">${{ p.compare_at_price }}</span>{% endif %}
+                <strong>${{ p.price }}</strong>
+              </div>
+              <form action="{% url 'cart_add' p.id %}" method="post" class="mt-2">
+                {% csrf_token %}<button class="btn btn-primary w-100 btn-sm">Add to cart</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+<!-- ======= LONG SEO TEXT ======= -->
+<div class="card mt-4">
+  <div class="card-body">
+    <h6>Online store of household appliances and electronics</h6>
+    <p class="small text-muted mb-2">
+      Home appliances, devices and content that make life easier. Join thousands of happy customers…
+    </p>
+    <p class="small text-muted">
+      Explore the latest releases, best prices, and exclusive online-only perks. Convenient returns and fast delivery.
+    </p>
+    <a href="#" class="btn btn-outline-secondary btn-sm rounded-pill">Read More</a>
+  </div>
+</div>
+{% endblock %}

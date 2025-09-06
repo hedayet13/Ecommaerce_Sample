@@ -1,0 +1,156 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}UpTown{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+
+<body>
+  <header class="site-header">
+  {# ── Utility bar ─────────────────────────────────────────────── #}
+  <div class="util-bar text-light small">
+    <div class="container d-flex justify-content-between align-items-center py-1">
+      <div class="d-flex gap-3">
+        <a class="util-link" href="{% url 'page_detail' slug='about' %}">About Us</a>
+        <a class="util-link" href="#">Our Partners</a>
+        <a class="util-link" href="#">Work With Us</a>
+      </div>
+      <div class="d-flex gap-3">
+        <a class="util-link" href="#">Track Your Order</a>
+        <a class="util-link" href="{% url 'contact' %}">Contact Us</a>
+        <a class="util-link" href="#">FAQs</a>
+      </div>
+    </div>
+  </div>
+
+  {# ── Main dark header with logo + search + hotline/cart ─────── #}
+  <div class="main-bar text-light">
+    <div class="container py-3 d-flex align-items-center gap-4 flex-wrap">
+      <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none text-light" href="/">
+        <i class="bi bi-bag-fill fs-3"></i>
+        <span class="fw-bold fs-4">UpTown<span class="text-primary">.</span></span>
+      </a>
+
+      <form class="search mx-auto flex-grow-1" role="search" method="get" action="{% url 'product_list' %}">
+        <div class="input-group input-group-lg rounded-pill overflow-hidden">
+          <input class="form-control border-0" type="search" name="q" placeholder="Search for products" />
+          <button class="btn btn-primary px-4"><i class="bi bi-search"></i></button>
+        </div>
+      </form>
+
+      <div class="d-flex align-items-center gap-4 flex-wrap">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-telephone fs-3"></i>
+          <div>
+            <div class="small opacity-75">Hotline 24/7</div>
+            <strong>(505) 285-5028</strong>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <a class="text-decoration-none text-light" href="{% url 'cart_detail' %}">
+            <i class="bi bi-cart3 fs-3"></i>
+          </a>
+          <div>
+            <div class="small opacity-75">${{ cart.subtotal|default:"0.00" }}</div>
+            <strong>{{ cart_count }} item{{ cart_count|pluralize }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {# ── Red category bar + wishlist/login ───────────────────────── #}
+  <nav class="category-bar">
+    <div class="container d-flex justify-content-between align-items-center py-2 flex-wrap gap-3">
+      <div class="d-flex flex-wrap gap-4 align-items-center">
+        {# Category dropdown-style items #}
+        {% for c in menu_categories %}
+          <div class="dropdown">
+            <a class="cat-link dropdown-toggle d-inline-flex align-items-center gap-2" href="{{ c.get_absolute_url }}" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-box"></i> {{ c.name }}
+            </a>
+            {% if c.children.all %}
+              <ul class="dropdown-menu">
+                {% for ch in c.children.all %}
+                  <li><a class="dropdown-item" href="{{ ch.get_absolute_url }}">{{ ch.name }}</a></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        {% empty %}
+          <a class="cat-link" href="#">Electronics</a>
+          <a class="cat-link" href="#">Appliances</a>
+        {% endfor %}
+      </div>
+
+      <div class="d-flex align-items-center gap-4">
+        <a class="cat-link d-inline-flex align-items-center gap-2" href="#"><i class="bi bi-heart"></i> Wishlist</a>
+
+        {% if request.user.is_authenticated %}
+          <a class="cat-link d-inline-flex align-items-center gap-2" href="{% url 'account_dashboard' %}">
+            <i class="bi bi-person"></i> {{ request.user.first_name|default:request.user.username }}
+          </a>
+          <form method="post" action="{% url 'logout' %}" class="d-inline">
+            {% csrf_token %}
+            <button class="btn btn-sm btn-outline-light">Logout</button>
+          </form>
+        {% else %}
+  <a class="cat-link d-inline-flex align-items-center gap-2" href="{% url 'login' %}">
+    <i class="bi bi-person"></i> Login
+  </a>
+  <a class="cat-link d-inline-flex align-items-center gap-2" href="{% url 'register' %}">
+    <i class="bi bi-person-plus"></i> Register
+  </a>
+{% endif %}
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+  {% if banners %}
+  <div class="container my-3">
+    <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for b in banners %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <img src="{{ b.image.url }}" class="d-block w-100 rounded" alt="{{ b.title }}">
+          <div class="carousel-caption text-start">
+            <h5>{{ b.title }}</h5>
+            <p>{{ b.subtitle }}</p>
+            {% if b.cta_url %}<a class="btn btn-primary" href="{{ b.cta_url }}">{{ b.cta_label|default:"Shop now"
+              }}</a>{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <main class="container my-4">
+    {% include 'partials/messages.html' %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="bg-dark text-light mt-5 py-4">
+    <div class="container d-flex justify-content-between flex-wrap gap-3">
+      <div><strong>UpTown</strong><br><small>For education/demo only.</small></div>
+      <div>
+        <a class="text-light text-decoration-none me-3" href="{% url 'blog_list' %}">Blog</a>
+        <a class="text-light text-decoration-none me-3" href="{% url 'page_detail' slug='about' %}">About</a>
+        <a class="text-light text-decoration-none" href="{% url 'contact' %}">Contact</a>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

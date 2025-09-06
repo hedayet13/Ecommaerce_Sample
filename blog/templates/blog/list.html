@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Blog{% endblock %}
+{% block content %}
+<h1>Blog</h1>
+<div class="list-group">
+  {% for p in posts %}
+    <a href="{{ p.get_absolute_url }}" class="list-group-item list-group-item-action">
+      <strong>{{ p.title }}</strong>
+      <small class="text-muted"> — {{ p.created_at|date:"M d, Y" }}</small>
+    </a>
+  {% empty %}
+    <p>No posts yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

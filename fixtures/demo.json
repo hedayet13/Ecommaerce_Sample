@@ -1,0 +1,86 @@
+[
+  {
+    "model": "pages.page",
+    "pk": 1,
+    "fields": {
+      "title": "About",
+      "slug": "about",
+      "body": "Demo marketplace inspired by Woodmart Marketplace 2."
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 1,
+    "fields": {
+      "title": "Best Gaming Laptop Models",
+      "slug": "best-gaming-laptop-models",
+      "body": "Sample blog body.",
+      "created_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Electronics",
+      "slug": "electronics",
+      "parent": null,
+      "menu": true
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Appliances",
+      "slug": "appliances",
+      "parent": null,
+      "menu": true
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "vendor": null,
+      "category": 1,
+      "name": "Oculus Quest 2",
+      "slug": "oculus-quest-2",
+      "description": "Standalone VR headset.",
+      "price": "449.00",
+      "compare_at_price": "499.00",
+      "is_active": true,
+      "created_at": "2025-01-02T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "vendor": null,
+      "category": 1,
+      "name": "PlayStation 5",
+      "slug": "playstation-5",
+      "description": "Next-gen console.",
+      "price": "800.00",
+      "compare_at_price": null,
+      "is_active": true,
+      "created_at": "2025-01-03T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "vendor": null,
+      "category": 1,
+      "name": "Apple Watch Series 8",
+      "slug": "apple-watch-series-8",
+      "description": "Smartwatch.",
+      "price": "399.00",
+      "compare_at_price": null,
+      "is_active": true,
+      "created_at": "2025-01-04T00:00:00Z"
+    }
+  }
+]
