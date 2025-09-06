@@ -14,13 +14,13 @@ built with Django 5 and PostgreSQL. It includes:
 1. Install Python 3.11+ and PostgreSQL 14+ (ensure `psql` is on PATH).
 2. Create DB:
    ```sql
-   CREATE DATABASE woodmart_clone;
+   CREATE DATABASE Ecommaerce_Sample;
    CREATE USER postgres WITH PASSWORD 'postgres';  -- or your own user/password
    GRANT ALL PRIVILEGES ON DATABASE woodmart_clone TO postgres;
    ```
 3. In PowerShell:
    ```powershell
-   cd woodmart_clone
+   cd Ecommaerce_Sample
    python -m venv .venv
    .\.venv\Scripts\activate
    pip install -r requirements.txt
