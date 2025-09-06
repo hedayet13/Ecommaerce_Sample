@@ -1,6 +1,6 @@
-# Woodmart Clone (Django)
+# Ecommerce sample(Django)
 
-A clean-room, education-focused clone of the *layout and features* of Woodmart's **Marketplace 2** demo, built with Django 5 and PostgreSQL. It includes:
+built with Django 5 and PostgreSQL. It includes:
 - Home banners, category menu, product grid, product details
 - Session cart and simple checkout (no payments)
 - Blog, static pages (About/Contact)
